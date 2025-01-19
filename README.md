@@ -1,84 +1,149 @@
-# <font color="green">ĐỀ BÀI:</font> Xây dựng ứng dụng Ngân hàng dựa trên kiến trúc microservice
+**MicroService Banking Application**
 
-## Kiến trúc có các service chính sau:
+**Overview**
 
-### 1. User Service (Auth Service):
+This project implements a **Banking Application** using a **Microservice Architecture** to manage various functionalities such as user management, account management, fund transfers, and transaction histories. Each functionality is implemented as a dedicated microservice. This README provides comprehensive documentation for the application, covering its history, architecture, components, and usage.
 
--   Dịch vụ microservice người dùng cung cấp các chức năng quản lý người dùng.
-    -   Điều này bao gồm đăng ký người dùng, đăng nhập (JWT), cập nhật thông tin người dùng, xem thông tin người dùng và truy cập tất cả các tài khoản liên quan đến người dùng.
-    -   **Chú ý:** người dùng muốn truy cập các api của Các Serivce Account Service, Fund Transfer Service, Transactions Service thì cần phải xác thực thông quan cơ chế JWT trước.
-    -   Tạo lớp Authentication Filter để validate token & API Gateway trước khi truy cập các api của các Service Account Service, Fund Transfer Service, Transactions Service.
+-----
+**Project Origin**
 
-### 2. Account Service:
+This project is inspired by an existing microservice banking project from the another repository. Initially, the team cloned and studied the project to understand the principles of microservices, including service decoupling, API gateways, and inter-service communication. From there, our team customized and extended the project for better learning and implementation practices.
 
--   Dịch vụ microservice tài khoản quản lý các API liên quan đến tài khoản.
-    -   Nó cho phép người dùng chỉnh sửa chi tiết tài khoản, xem tất cả các tài khoản liên kết với hồ sơ người dùng, truy cập lịch sử giao dịch cho từng tài khoản và hỗ trợ quy trình đồng tài khoản.
+**Original Grumpy Team Project**
 
-### 3. Fund Transfer Service:
+- GitHub Link: [Grumpy Team Banking Project](https://github.com/kartik1502/Spring-Boot-Microservices-Banking-Application)
+-----
+**Current Project**
 
--   Dịch vụ microservice chuyển tiền cung cấp các chức năng liên quan đến chuyển tiền.
-    -   Người dùng có thể khởi động các giao dịch chuyển tiền giữa các tài khoản khác nhau, truy cập các bản ghi chuyển tiền chi tiết và xem thông tin cụ thể của bất kỳ giao dịch chuyển tiền nào.
+**Team Contributions**
 
-### 4. Transactions Service:
+This version of the project is a collaborative effort by Team 2, with individual members focusing on specific microservices and infrastructure tasks.
 
--   Dịch vụ giao dịch cung cấp một loạt các dịch vụ liên quan đến giao dịch.
-    -   Người dùng có thể xem giao dịch dựa trên các tài khoản cụ thể hoặc ID tham chiếu giao dịch, cũng như thực hiện nạp tiền hoặc rút tiền từ tài khoản của họ.
+|**Team Member**|**Responsibility**|**Branch**|
+| :- | :- | :- |
+|**Member 1**|User Service (Authentication, JWT)|user-service|
+|**Member 2**|Account Service (Account Management APIs)|account-service|
+|**Member 3**|Fund Transfer Service|fund-transfer-service|
+|**Member 4**|Transactions Service|transaction-service|
+|**Member 5**|Infrastructure (Eureka Server, API Gateway)|eureka-gateway|
 
-## <font color="green">GITHUB DỰ ÁN CỦA TEAM 2</font>
+-----
+**Microservices Architecture**
 
-Link github banking team 2: [MicroService-Banking-Team2](https://github.com/hiepdeptrai0908/MicroService-Banking-Team2)
+|Service Name|Description|Port|
+| :- | :- | :- |
+|**User Service**|Handles user registration, login, JWT authentication, and user management functionality.|8081|
+|**Account Service**|Manages user accounts, including account creation, updates, and transaction history.|8082|
+|**Fund Transfer**|Enables fund transfers between accounts and provides transfer history.|8083|
+|**Transactions**|Provides APIs for viewing transaction histories, deposits, and withdrawals.|8084|
+|**Eureka Server**|Service registry for enabling microservice discovery.|8761|
+|**API Gateway**|Central entry point for routing requests, securing endpoints with JWT validation.|8080|
+|**Sequence Generator**|Generates unique account numbers for new accounts created in the Account Service.|8085|
 
-### Bước 1: Clone dự án về máy
-- **Ở tại folder muốn tải dự án về > mở Terminal > gõ dòng lệnh:**<br>
-  `git clone git@github.com:hiepdeptrai0908/MicroService-Banking-Team2.git`
+-----
+**Setup Instructions**
 
-### Bước 2: Check out vào nhánh của bạn
-1. **Đi vào thư mục vừa mới clone về:**
-    - VD: `cd MicroService-Banking-Team2`
+**Step 1: Clone the Repository**
 
-2. **Tại thư mục dự án check out vào nhánh của bạn:**
-    - Để tránh bị xung đột code thì hãy pull code từ nhánh "main" về để cập nhật code mới nhất của dự án:  
-      `git checkout main`  
-      `git pull`
+Run the following command to clone the repository:
 
-    - Sau khi đã pull code về thì checkout sang nhánh khác hoặc tạo nhánh mới để tiến hành code:  
-      *VD checkout sang nhánh đã có:*  
-      `git checkout dev/tên_nhánh`  
-      *VD tạo nhánh mới:*  
-      `git checkout -b dev/tên_nhánh_mới`
+$ git clone git@github.com:hiepdeptrai0908/MicroService-Banking-Team2.git
 
-> **Lưu ý:** Mỗi khi bạn chỉnh sửa gì thì hãy checkout sang nhánh khác và đặt tên nhánh đúng với chức năng bạn sẽ làm, ví dụ: `git checkout -b dev/JWT_service`. Tuyệt đối không sửa trực tiếp vào nhánh chính là "main".
+**Step 2: Checkout Branches**
 
-## NHIỆM VỤ:
+Navigate to the cloned folder and pull the latest changes from the main branch:
 
-### **Thành viên 1 (User Service)**: 
-- Chịu trách nhiệm phát triển các API liên quan đến đăng ký, đăng nhập người dùng, và xác thực JWT.
-- Code tại nhánh: `git checkout user-service`
-- Cổng `server.port=8081`
+$ cd MicroService-Banking-Team2
 
-### **Thành viên 2 (Account Service)**: 
-- Xây dựng các API quản lý tài khoản, bao gồm xem và chỉnh sửa thông tin tài khoản.
-- Code tại nhánh: `git checkout account-service`
-- Cổng `server.port=8082`
+$ git checkout main
 
-### **Thành viên 3 (Fund Transfer Service)**: 
-- Phát triển các API cho chức năng chuyển tiền.
-- Code tại nhánh: `git checkout fund-transfer-service`
-- Cổng `server.port=8083`
+$ git pull
 
-### **Thành viên 4 (Transactions Service)**: 
-- Xây dựng các API liên quan đến quản lý giao dịch, bao gồm xem lịch sử giao dịch, nạp/rút tiền.
-- Code tại nhánh: `git checkout transaction-service`
-- Cổng `server.port=8084`
+To work on a specific service, switch to the corresponding branch or create a new branch:
 
-### **Thành viên 5 (Cấu hình và triển khai cơ sở hạ tầng)**: 
-- Cấu hình và triển khai Eureka Server và API Gateway.
-- Review code. Đồng thời tích hợp các Service vào Eureka và bảo mật API Gateway với JWT.
-- Cổng Eureka Server `server.port=8761`
-- Cổng API Gateway `server.port=8080`
+\# Checkout an existing branch
 
-### **Service phụ của Account Service (Sequence Generator)**:
-- Service phụ có nhiệm vụ: Tự động tạo ra **số tài khoản** khi tạo Account mới.
-- **Account Service** sẽ gọi api chéo sang **Sequence Generator** Service để tạo accountDto
-- Code tại nhánh: `git checkout sequence-generator`
-- Cổng `server.port=8085`
+$ git checkout dev/branch\_name
+
+\# Create a new branch
+
+$ git checkout -b dev/new\_branch\_name
+
+**Step 3: Build and Run Services**
+
+Use the following steps to build and start individual services:
+
+1. Navigate to the service directory (e.g., user-service).
+1. Build the service:
+
+$ mvn clean install
+
+1. Run the service:
+
+$ mvn spring-boot:run
+
+-----
+**Detailed Service Information**
+
+**1. User Service**
+
+- **Responsibilities:** Handles user registration, login, and JWT-based authentication.
+- **Key Endpoints:**
+  - POST /users/register: Register a new user.
+  - POST /users/login: Authenticate a user and generate a JWT token.
+  - GET /users/profile: Retrieve user profile details.
+- **Port:** 8081
+
+**2. Account Service**
+
+- **Responsibilities:** Manages account creation, updates, and details.
+- **Key Endpoints:**
+  - POST /accounts/create: Create a new account.
+  - GET /accounts/{id}: View account details.
+  - PUT /accounts/{id}: Update account information.
+- **Port:** 8082
+
+**3. Fund Transfer Service**
+
+- **Responsibilities:** Handles transfers between accounts and transfer histories.
+- **Key Endpoints:**
+  - POST /transfers/initiate: Initiate a fund transfer.
+  - GET /transfers/history: Retrieve transfer history.
+- **Port:** 8083
+
+**4. Transactions Service**
+
+- **Responsibilities:** Provides transaction records, deposit, and withdrawal functionality.
+- **Key Endpoints:**
+  - POST /transactions/deposit: Deposit funds into an account.
+  - POST /transactions/withdraw: Withdraw funds from an account.
+  - GET /transactions/history: Retrieve transaction history.
+- **Port:** 8084
+
+**5. Eureka Server**
+
+- **Responsibilities:** Acts as a service registry for microservices.
+- **Port:** 8761
+
+**6. API Gateway**
+
+- **Responsibilities:** Secures and routes requests to appropriate microservices using JWT validation.
+- **Port:** 8080
+
+**7. Sequence Generator Service**
+
+- **Responsibilities:** Generates unique account numbers for new accounts in the Account Service.
+- **Port:** 8085
+-----
+**Technology Stack**
+
+- **Programming Language:** Java (Spring Boot)
+- **Authentication:** JSON Web Token (JWT)
+- **Service Discovery:** Eureka Server
+- **Gateway:** Spring Cloud Gateway
+- **Database:** MySQL
+- **Build Tool:** Maven
+-----
+**License**
+
+This project is licensed under the MIT License. See the LICENSE file for details.
